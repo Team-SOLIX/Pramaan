@@ -1,10 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import multer from 'multer';
-import crypto from 'crypto';
-import dotenv from 'dotenv';
-import path from 'path';
-import fs from 'fs';
+const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const crypto = require('crypto');
+const dotenv = require('dotenv');
+const path = require('path');
+const fs = require('fs');
 
 dotenv.config();
 

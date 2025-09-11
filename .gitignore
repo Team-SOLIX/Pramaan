@@ -1,0 +1,16 @@
+node_modules/
+backend/uploads/
+.env
+.env.*
+dist/
+build/
+coverage/
+.cache/
+.artifacts/
+artifacts/
+cache/
+.typechain/
+typechain/
+.idea/
+.vscode/
+.DS_Store 
