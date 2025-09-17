@@ -1,12 +1,17 @@
 {
   "name": "blockchain",
   "version": "1.0.0",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
     "node": "hardhat node",
-    "deploy:local": "hardhat run scripts/deploy.js --network hardhat"
+    "deploy:local": "hardhat run scripts/deploy.cjs --network hardhat",
+    "deploy:mumbai": "hardhat run scripts/deploy.cjs --network mumbai",
+    "verify:mumbai": "hardhat verify --network mumbai",
+    "check-balance": "hardhat run scripts/check-balance.js --network mumbai",
+    "check-balance:local": "hardhat run scripts/check-balance.js --network hardhat"
   },
   "keywords": [],
   "author": "",
