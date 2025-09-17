@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pramaan Skeleton
 
 Pramaan is a blockchain-based certificate verification system with AI tamper detection and OTP authentication.
@@ -161,3 +162,7 @@ Features:
 ## Notes
 - `/upload` expects form field name `certificate`.
 - Backend currently stores hashes in-memory; replace with on-chain integration later. 
+=======
+# Pramaan
+pramaan - Decentralized Academic record Verification system
+>>>>>>> 8a4e2ebb30c89b72f62e141d548b2457d613b953
