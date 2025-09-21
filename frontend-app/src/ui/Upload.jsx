@@ -4,7 +4,7 @@ import axios from 'axios'
 const backendBase = import.meta.env.VITE_BACKEND_BASE || 'http://localhost:4000'
 const aiBase = import.meta.env.VITE_AI_BASE || 'http://localhost:5001'
 
-export default function Upload(){
+export default function Upload() {
   const fileRef = useRef()
   const [result, setResult] = useState(null)
   const [status, setStatus] = useState('')
@@ -20,37 +20,36 @@ export default function Upload(){
     }
   }
 
-  async function onUpload(e){
+  async function onUpload(e) {
     e.preventDefault()
     const file = fileRef.current.files?.[0]
-    if(!file) {
+    if (!file) {
       setStatus('Please select a certificate file')
       return
     }
-    
+
     setLoading(true)
     setResult(null)
-    
+
     try {
       // Step 1: AI Analysis
       setStatus('🔍 Running AI tamper detection...')
       const aiForm = new FormData()
       aiForm.append('certificate', file)
       const aiRes = await axios.post(`${aiBase}/ai/check`, aiForm)
-      
+
       // Step 2: Backend Upload & Blockchain Storage
-      setStatus('⛓️ Storing on blockchain...')
+      setStatus('⛓ Storing on blockchain...')
       const form = new FormData()
       form.append('certificate', file)
       const token = localStorage.getItem('idToken')
       const res = await axios.post(`${backendBase}/upload`, form, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       })
-      
+
       setResult({ ai: aiRes.data, backend: res.data })
       setStatus('✅ Certificate successfully uploaded and verified!')
-      
-    } catch(e) {
+    } catch (e) {
       setStatus('❌ Error: ' + (e.response?.data?.error || e.message))
     } finally {
       setLoading(false)
@@ -60,10 +59,10 @@ export default function Upload(){
   return (
     <div>
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h2 style={{ 
-          color: 'white', 
-          fontSize: '2.5rem', 
-          fontWeight: '700', 
+        <h2 style={{
+          color: 'white',
+          fontSize: '2.5rem',
+          fontWeight: '700',
           marginBottom: '16px',
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           WebkitBackgroundClip: 'text',
@@ -72,8 +71,8 @@ export default function Upload(){
         }}>
           Upload Certificate
         </h2>
-        <p style={{ 
-          color: 'rgba(255,255,255,0.7)', 
+        <p style={{
+          color: 'rgba(255,255,255,0.7)',
           fontSize: '1.1rem',
           lineHeight: '1.6',
           maxWidth: '500px',
@@ -82,9 +81,9 @@ export default function Upload(){
           Upload your certificate for blockchain verification and AI-powered tamper detection
         </p>
       </div>
-      
+
       <form onSubmit={onUpload} style={{ marginBottom: '30px' }}>
-        {/* Modern File Upload Area */}
+        {/* File Upload Area */}
         <div style={{
           background: 'rgba(255, 255, 255, 0.05)',
           border: '2px dashed rgba(102, 126, 234, 0.3)',
@@ -96,9 +95,9 @@ export default function Upload(){
           cursor: 'pointer',
           position: 'relative'
         }}>
-          <input 
-            type="file" 
-            ref={fileRef} 
+          <input
+            type="file"
+            ref={fileRef}
             onChange={handleFileSelect}
             accept="image/*,.pdf"
             style={{
@@ -111,26 +110,11 @@ export default function Upload(){
               cursor: 'pointer'
             }}
           />
-          <div style={{
-            fontSize: '4rem',
-            marginBottom: '20px',
-            opacity: 0.7
-          }}>
-            📄
-          </div>
-          <h3 style={{
-            color: 'white',
-            fontSize: '1.5rem',
-            fontWeight: '600',
-            marginBottom: '10px'
-          }}>
+          <div style={{ fontSize: '4rem', marginBottom: '20px', opacity: 0.7 }}>📄</div>
+          <h3 style={{ color: 'white', fontSize: '1.5rem', fontWeight: '600', marginBottom: '10px' }}>
             Drop your certificate here
           </h3>
-          <p style={{
-            color: 'rgba(255,255,255,0.6)',
-            fontSize: '1rem',
-            marginBottom: '20px'
-          }}>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', marginBottom: '20px' }}>
             or click to browse files
           </p>
           <div style={{
@@ -145,7 +129,7 @@ export default function Upload(){
             Supports JPG, PNG, PDF files
           </div>
         </div>
-        
+
         {preview && (
           <div style={{
             background: 'rgba(255, 255, 255, 0.05)',
@@ -157,9 +141,9 @@ export default function Upload(){
             alignItems: 'center',
             gap: '20px'
           }}>
-            <img 
-              src={preview} 
-              alt="Certificate preview" 
+            <img
+              src={preview}
+              alt="Certificate preview"
               style={{
                 width: '80px',
                 height: '80px',
@@ -169,24 +153,22 @@ export default function Upload(){
               }}
             />
             <div>
-              <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '1.1rem' }}>
-                Certificate Preview
-              </h4>
+              <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '1.1rem' }}>Certificate Preview</h4>
               <p style={{ color: 'rgba(255,255,255,0.6)', margin: 0, fontSize: '0.9rem' }}>
                 ✅ Ready for upload and verification
               </p>
             </div>
           </div>
         )}
-        
-        <button 
-          type="submit" 
+
+        <button
+          type="submit"
           disabled={loading}
           style={{
             width: '100%',
             padding: '20px 40px',
-            background: loading 
-              ? 'rgba(255,255,255,0.1)' 
+            background: loading
+              ? 'rgba(255,255,255,0.1)'
               : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             color: 'white',
             border: 'none',
@@ -194,9 +176,7 @@ export default function Upload(){
             fontSize: '1.1rem',
             fontWeight: '600',
             cursor: loading ? 'not-allowed' : 'pointer',
-            boxShadow: loading 
-              ? 'none' 
-              : '0 20px 40px rgba(102, 126, 234, 0.4)',
+            boxShadow: loading ? 'none' : '0 20px 40px rgba(102, 126, 234, 0.4)',
             transition: 'all 0.3s ease',
             transform: loading ? 'none' : 'translateY(-2px)',
             display: 'flex',
@@ -218,13 +198,11 @@ export default function Upload(){
               Processing...
             </>
           ) : (
-            <>
-              🚀 Upload & Verify Certificate
-            </>
+            <>🚀 Upload & Verify Certificate</>
           )}
         </button>
       </form>
-      
+
       {status && (
         <div style={{
           padding: '15px',
@@ -237,7 +215,7 @@ export default function Upload(){
           {status}
         </div>
       )}
-      
+
       {result && (
         <div style={{
           padding: '20px',
@@ -246,7 +224,7 @@ export default function Upload(){
           backdropFilter: 'blur(10px)'
         }}>
           <h3 style={{ color: '#4a5568', marginBottom: '20px' }}>Verification Results</h3>
-          
+
           <div style={{ marginBottom: '20px' }}>
             <h4 style={{ color: '#4a5568', marginBottom: '10px' }}>🤖 AI Tamper Detection</h4>
             <div style={{
@@ -255,7 +233,7 @@ export default function Upload(){
               background: result.ai.tamperLikely ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
               border: `1px solid ${result.ai.tamperLikely ? '#ef4444' : '#10b981'}`
             }}>
-              <strong>Status:</strong> {result.ai.tamperLikely ? '⚠️ Suspicious' : '✅ Clean'}
+              <strong>Status:</strong> {result.ai.tamperLikely ? '⚠ Suspicious' : '✅ Clean'}
               {result.ai.confidence && (
                 <span> (Confidence: {(result.ai.confidence * 100).toFixed(1)}%)</span>
               )}
@@ -271,9 +249,9 @@ export default function Upload(){
               )}
             </div>
           </div>
-          
+
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ color: '#4a5568', marginBottom: '10px' }}>⛓️ Blockchain Storage</h4>
+            <h4 style={{ color: '#4a5568', marginBottom: '10px' }}>⛓ Blockchain Storage</h4>
             <div style={{
               padding: '15px',
               background: 'rgba(16, 185, 129, 0.1)',
@@ -292,10 +270,10 @@ export default function Upload(){
               </code>
               {result.backend.txHash && (
                 <p style={{ marginTop: '10px' }}>
-                  <strong>Transaction:</strong> 
-                  <a 
+                  <strong>Transaction:</strong>
+                  <a
                     href={`https://mumbai.polygonscan.com/tx/${result.backend.txHash}`}
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: '#667eea', textDecoration: 'underline' }}
                   >
@@ -305,8 +283,8 @@ export default function Upload(){
               )}
             </div>
           </div>
-          
-          <button 
+
+          <button
             onClick={() => {
               navigator.clipboard.writeText(result.backend.hash)
               setStatus('📋 Hash copied to clipboard!')
@@ -329,5 +307,3 @@ export default function Upload(){
     </div>
   )
 }
-
-
